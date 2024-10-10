@@ -59,8 +59,12 @@
             <a href="#classes" class="nav-item nav-link">Explore</a>
             <a href="#how-to-play" class="nav-item nav-link">How-to-play</a>
         </div>
-        <a href="#join-us" class="btn btn-primary rounded-pill px-3 d-none d-lg-block">Join Us<i class="fa fa-arrow-right ms-3"></i></a>
-    </div>
+        <p id="esp-status">
+            ESP Status: 
+            <span id="status-text" class="text-danger">Disconnected</span> 
+            <i id="status-icon" class="fas fa-circle text-danger"></i>
+        </p>
+            </div>
 </nav>
 <!-- Navbar End -->
 
@@ -337,7 +341,9 @@
             <div class="container py-5">
                 <div class="row g-5">
                     <div class="col-lg-3 col-md-6">
-                        
+
+                    <!-- Footer with ESP Status -->
+                    <!-- Footer with ESP Status -->              
                     </div>
                     <div class="col-lg-3 col-md-6">
                         
@@ -388,6 +394,11 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>
+
+
+

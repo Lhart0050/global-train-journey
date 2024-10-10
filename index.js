@@ -1,54 +1,85 @@
-// index.js
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const path = require('path');
+const bodyParser = require('body-parser'); // To parse JSON bodies
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
+// Middleware to parse JSON
+app.use(bodyParser.json());
+
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Variable to track ESP32 status
+let espStatus = false; // false = disconnected, true = connected
+let espTimeout;
+
+// Define the timeout duration (10 seconds)
+const TIMEOUT_DURATION = 10000;
+
+// Function to set ESP as disconnected after timeout
+function setDisconnected() {
+  espStatus = false;
+  console.log('ESP32 disconnected due to timeout.');
+  io.emit('esp-status', { connected: false });
+}
 
 // Handle client connections via Socket.io
 io.on('connection', (socket) => {
   console.log('A user connected');
+
+  // Emit current ESP status to newly connected client
+  socket.emit('esp-status', { connected: espStatus });
 
   // Handle disconnection
   socket.on('disconnect', () => {
     console.log('A user disconnected');
   });
 
-  // Receive answer from client
+  // Receive answer from client (if applicable)
   socket.on('submit-answer', (data) => {
     console.log('Received answer:', data);
-    // Validate answer logic here
-
     // Example Question: "Where does pizza come from?"
     if (data.question === "Where does pizza come from?") {
       if (data.answer.toLowerCase() === "italy") {
         // Correct answer
         socket.emit('answer-result', { correct: true });
-        // Command ESP32 to move to Italy statue (assuming statue 1)
         io.emit('move-train', { target: 1 });
       } else {
         // Incorrect answer
         socket.emit('answer-result', { correct: false });
-        // Option to retry or move back (auto move back for simplicity)
         io.emit('move-train', { target: 'start' });
       }
     }
-
-    // Add more question validations as needed
   });
+});
 
-  // Handle joystick commands from client
-  socket.on('joystick-command', (data) => {
-    console.log('Received joystick command:', data);
-    // Forward joystick commands to ESP32 master
-    io.emit('joystick-command', data);
-  });
+// Endpoint to receive ESP32 status updates
+app.post('/esp-status', (req, res) => {
+  const { connected } = req.body;
+
+  if (typeof connected !== 'boolean') {
+    return res.status(400).json({ message: 'Invalid status format. Expected boolean.' });
+  }
+
+  // Update ESP status
+  espStatus = connected;
+  console.log(`ESP32 is now ${connected ? 'connected' : 'disconnected'}.`);
+
+  // Broadcast the new status to all connected website clients
+  io.emit('esp-status', { connected });
+
+  // Clear previous timeout and start a new one
+  clearTimeout(espTimeout);
+  if (connected) {
+    espTimeout = setTimeout(setDisconnected, TIMEOUT_DURATION); // Timeout after 10 seconds
+  }
+
+  res.status(200).json({ message: 'Status updated successfully.' });
 });
 
 // Start the server
