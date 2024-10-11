@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kids Quiz</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            height: 100%;
+        }
+        .quiz-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .progress-container {
+            flex-grow: 1;
+            margin-right: 20px;
+        }
+        .progress-bar {
+            background-color: #e5e7eb;
+            height: 8px;
+            border-radius: 4px;
+            margin: 10px 0;
+            position: relative;
+        }
+        .progress {
+            background-color: #3b82f6;
+            width: 0%; /* Will be updated dynamically */
+            height: 100%;
+            border-radius: 4px;
+        }
+        .steps {
+            display: flex;
+            justify-content: space-between;
+        }
+        .step {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #e5e7eb;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        .step.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .timer {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background-color: #3b82f6;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .question-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .question {
+            background-color: #3b82f6;
+            color: white;
+            padding: 24px;
+            border-radius: 8px;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn-outline {
+            border: 1px solid #d1d5db;
+            background-color: white;
+            color: #6b7280;
+        }
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+        }
+        .btn-ghost {
+            background-color: transparent;
+            color: #3b82f6;
+            border: none;
+        }
+        .clock-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #dbeafe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .clock-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: #3b82f6;
+        }
+        .answer-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        #feedback {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="header">
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress" id="progress-bar"></div>
+                </div>
+                <div class="steps" id="steps-container">
+                    <!-- Steps will be dynamically generated -->
+                </div>
+            </div>
+            <div class="timer" id="timer">60</div>
+        </div>
+        <img src="/placeholder.svg?height=400&width=800" alt="Question Image" class="question-image" id="question-image">
+        <div class="question" id="question-text">
+            Loading question...
+        </div>
+        <input type="text" id="answer-input" class="answer-input" placeholder="Type your answer here">
+        <div id="feedback"></div>
+        <div class="navigation">
+            <button class="btn btn-outline" id="prev-button">◀ Previous</button>
+            <div class="clock-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 1a11 11 0 1 0 0 22A11 11 0 0 0 12 1zm1 11h4v2h-6V6h2v6z"/>
+                </svg>
+            </div>
+            <div>
+                <button class="btn btn-primary" id="submit-button">Submit</button>
+                <button class="btn btn-ghost" id="next-button">Skip ▶▶</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Socket.io -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let socket = io();
+
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let totalQuestions = 0;
+        let timerInterval;
+
+        // Fetch the questions from the server when the page loads
+        window.onload = function() {
+            fetch('/questions')
+                .then(response => response.json())
+                .then(data => {
+                    questions = data;
+                    totalQuestions = questions.length;
+                    generateSteps();
+                    displayQuestion();
+                    startTimer();
+                })
+                .catch(error => console.error('Error fetching questions:', error));
+        };
+
+        function generateSteps() {
+            const stepsContainer = document.getElementById('steps-container');
+            stepsContainer.innerHTML = '';
+            for (let i = 0; i < totalQuestions; i++) {
+                const step = document.createElement('div');
+                step.className = 'step';
+                step.textContent = i + 1;
+                if (i === currentQuestionIndex) {
+                    step.classList.add('active');
+                }
+                stepsContainer.appendChild(step);
+            }
+        }
+
+        function updateProgressBar() {
+            const progressBar = document.getElementById('progress-bar');
+            const progressPercent = ((currentQuestionIndex) / (totalQuestions - 1)) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+        }
+
+        function displayQuestion() {
+            if (questions.length > 0) {
+                const question = questions[currentQuestionIndex];
+                document.getElementById('question-text').textContent = question.question;
+                document.getElementById('question-image').src = question.image ? `img/${question.image}` : '/placeholder.svg';
+                document.getElementById('answer-input').value = '';
+                document.getElementById('feedback').textContent = '';
+                updateSteps();
+                updateProgressBar();
+            } else {
+                document.getElementById('question-text').textContent = 'No questions available.';
+            }
+        }
+
+        function updateSteps() {
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((step, index) => {
+                if (index === currentQuestionIndex) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        }
+
+        document.getElementById('prev-button').addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+            }
+        });
+
+        document.getElementById('next-button').addEventListener('click', () => {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            }
+        });
+
+        document.getElementById('submit-button').addEventListener('click', () => {
+            const answer = document.getElementById('answer-input').value;
+            const question = questions[currentQuestionIndex].question;
+            socket.emit('submit-answer', { question, answer });
+        });
+
+        // Listen for the answer result from the server
+        socket.on('answer-result', (data) => {
+            if (data.correct) {
+                document.getElementById('feedback').textContent = 'Correct!';
+            } else {
+                document.getElementById('feedback').textContent = 'Incorrect, try again.';
+            }
+        });
+
+        function startTimer() {
+            let timeLeft = 60; // seconds
+            const timerElement = document.getElementById('timer');
+            timerElement.textContent = timeLeft;
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('feedback').textContent = 'Time\'s up!';
+                    // Disable input and buttons
+                    document.getElementById('answer-input').disabled = true;
+                    document.getElementById('submit-button').disabled = true;
+                }
+            }, 1000);
+        }
+
+    </script>
+</body>
+</html>

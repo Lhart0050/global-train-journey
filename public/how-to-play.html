@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>How to Play - Kid</title>
+    <meta content="width=device-width, initial-scale=1.02" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@600&family=Lobster+Two:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- Custom Styles for Tabs (Optional) -->
+    <style>
+        /* Tabs Section */
+.accordionContact-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.accordionContact-tab {
+            flex: 1;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            background-color: #0b99ff9b;
+        }
+
+
+.accordionContact-tab:hover {
+    background-color: var(--primary);
+    color: #fff;
+}
+
+.accordionContact-active {
+    background-color: var(--primary);
+    color: rgb(30, 14, 203);
+    border-color: var(--primary);
+}
+
+.accordionContact-content .accordionContact-item {
+    display: none;
+}
+
+.accordionContact-content .accordionContact-item.accordionContact-active {
+    display: block;
+}
+
+/* Optional: Styling for Images within Tabs */
+.accordionContact-item__container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 2px solid var(--primary);
+}
+
+   
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid bg-white p-0">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+        <!-- Navbar Start -->
+        <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0">
+            <a href="index.html" class="navbar-brand">
+                <img src="img/logo.png" style="width: 110px; height: auto;" alt="Logo">
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav mx-auto">
+                   
+                </div>
+                <p id="esp-status">
+                    ESP Status: 
+                    <span id="status-text" class="text-danger">Disconnected</span> 
+                    <i id="status-icon" class="fas fa-circle text-danger"></i>
+                </p>
+            </div>
+        </nav>
+        <!-- Navbar End -->
+
+        
+        <!-- Page Header Start -->
+        <div class="container-fluid px-0 how-to-play-header page-header position-relative mb-5">
+            <div class="container-fluid px-0 py-5">
+                <h1 class="display-2 text-white animated slideInDown mb-4">How to Play</h1>
+                <nav aria-label="breadcrumb animated slideInDown">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item text-white active" aria-current="page">How to Play</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <!-- Page Header End -->
+
+ 
+        <!-- How to Play Content Start -->
+        <div class="container-xxl py-5">
+            <div class="container">
+                <!-- Tabs -->
+                <section class="accordionContact-tabs mb-4">
+                    <button class="accordionContact-tab accordionContact-active btn btn-primary rounded-pill py-sm-3 px-sm-5 me-3 animated slideInLeft" data-actab-group="0" data-actab-id="0"><strong>How to Control Joystick</strong></button>
+                    <button class="accordionContact-tab btn btn-primary rounded-pill py-sm-3 px-sm-5 me-3 animated slideInLeft" data-actab-group="0" data-actab-id="1"><strong>What if You Cannot Answer</strong></button>
+                    <button class="accordionContact-tab btn btn-primary rounded-pill py-sm-3 px-sm-5 me-3 animated slideInLeft" data-actab-group="0" data-actab-id="2"><strong>How to Get Points</strong></button>
+                    <button class="accordionContact-tab btn btn-primary rounded-pill py-sm-3 px-sm-5 me-3 animated slideInLeft" data-actab-group="0" data-actab-id="3"><strong>How Can Sensor Detect</strong></button>
+                </section>
+
+
+                <!-- Tabbed Content -->
+                <section class="accordionContact-content">
+                    <!-- Tab 1: How to Control Joystick -->
+                    <article class="accordionContact-item accordionContact-active how-to-play-container" data-actab-group="0" data-actab-id="0">
+                        <h6 class="text-secondary text-uppercase" style="color: #1E60AA !important;">Control Your Joystick</h6>
+                        <h4 class="accordionContact-item__label">How to Control the Joystick</h4>
+                        <div class="accordionContact-item__container">
+                            <p>To control the joystick, follow these steps:</p>
+                            <ul>
+                                <li>Hold the joystick firmly with both hands.</li>
+                                <li>Move the joystick forward to move the train forward.</li>
+                                <li>Move it backward to reverse the train.</li>
+                            </ul>
+                            <img src="/img/joystick-control.png" alt="Joystick Control" class="img-fluid rounded mt-3">
+                        </div>
+                    </article>
+
+                    <!-- Tab 2: What if You Cannot Answer -->
+                    <article class="accordionContact-item how-to-play-container" data-actab-group="0" data-actab-id="1">
+                        <h6 class="text-secondary text-uppercase" style="color: #1E60AA !important;">Handling Questions</h6>
+                        <h4 class="accordionContact-item__label">What if You Cannot Answer?</h4>
+                        <div class="accordionContact-item__container">
+                            <p>If you cannot answer a question, don't worry! You have the following options:</p>
+                            <ul>
+                                <li>Use a hint provided to guide you towards the correct answer.</li>
+                                <li>Ask for help from a teacher or a fellow player.</li>
+                                <li>Attempt the question again after some time.</li>
+                            </ul>
+                            <img src="img/cannot-answer.png" alt="Cannot Answer" class="img-fluid rounded mt-3">
+                        </div>
+                    </article>
+
+                    <!-- Tab 3: How to Get Points -->
+                    <article class="accordionContact-item how-to-play-container" data-actab-group="0" data-actab-id="2">
+                        <h6 class="text-secondary text-uppercase" style="color: #1E60AA !important;">Earn Points</h6>
+                        <h4 class="accordionContact-item__label">How to Get Points</h4>
+                        <div class="accordionContact-item__container">
+                            <p>You can earn points by:</p>
+                            <ul>
+                                <li>Answering questions correctly.</li>
+                                <li>Completing modules efficiently.</li>
+                                <li>Participating in bonus challenges.</li>
+                                <li>Helping other players when they need assistance.</li>
+                            </ul>
+                            <img src="img/get-points.png" alt="Get Points" class="img-fluid rounded mt-3">
+                        </div>
+                    </article>
+
+                    <!-- Tab 4: How Can Sensor Detect -->
+                    <article class="accordionContact-item how-to-play-container" data-actab-group="0" data-actab-id="3">
+                        <h6 class="text-secondary text-uppercase" style="color: #ebf6ff !important;">Sensor Detection</h6>
+                        <h4 class="accordionContact-item__label">How Can Sensors Detect?</h4>
+                        <div class="accordionContact-item__container">
+                            <p>Our sensors ensure the train stops precisely in front of each statue by:</p>
+                            <ul>
+                                <li>Using infrared sensors to detect the position of the train.</li>
+                                <li>Calibrating the stopping distance to align with the statue's location.</li>
+                                <li>Providing real-time feedback to adjust the train's speed.</li>
+                            </ul>
+                            <img src="img/sensor-detect.png" alt="Sensor Detection" class="img-fluid rounded mt-3">
+                        </div>
+                    </article>
+                </section>
+            </div>
+        </div>
+
+        
+
+
+        <!-- Footer Start -->
+        <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+            <div class="container py-5">
+                
+            </div>
+        </div>
+        <!-- Footer End -->
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+
+    <!-- Tab Functionality Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.accordionContact-tab');
+            const contents = document.querySelectorAll('.accordionContact-item');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const group = tab.getAttribute('data-actab-group');
+                    const id = tab.getAttribute('data-actab-id');
+
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('accordionContact-active'));
+
+                    // Add active class to clicked tab
+                    tab.classList.add('accordionContact-active');
+
+                    // Hide all content
+                    contents.forEach(content => content.classList.remove('accordionContact-active'));
+
+                    // Show the selected content
+                    const activeContent = document.querySelector(`.accordionContact-item[data-actab-group="${group}"][data-actab-id="${id}"]`);
+                    if (activeContent) {
+                        activeContent.classList.add('accordionContact-active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

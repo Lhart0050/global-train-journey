@@ -253,7 +253,7 @@ h6,
 }
 
 .page-header {
-    background: linear-gradient(rgba(0, 0, 0, .2), rgba(0, 0, 0, .2)), url(../img/carousel-1.jpg) center center no-repeat;
+    background: linear-gradient(rgba(6, 6, 6, 0.336), rgba(0, 0, 0, 0.523)), url(../img/How.png) center center no-repeat;
     background-size: cover;
 }
 
@@ -505,6 +505,38 @@ h6,
     border-right: 1px solid rgba(255, 255, 255, .1);
 }
 
+/* Target the How-to-Play Page Header Specifically */
+.how-to-play-header {
+    padding-left: 50px; /* Add left padding to move content away from the left edge */
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.how-to-play-header h1 {
+    padding-left: 200px; /* Adjust the left padding for the h1 */
+}
+
+.how-to-play-header nav {
+    padding-left: 200px; /* Adjust the left padding for the breadcrumb */
+}
+
+.how-to-play-header img {
+    width: 100%;
+    object-fit: cover; /* Ensures the image covers the container */
+}
+
+.how-to-play-container {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-bottom: 40px;
+}
+
+.how-to-play-container img {
+    border-radius: 10px;
+}
 
 
 .footer .copyright a:hover,
@@ -517,3 +549,6 @@ h6,
     padding-right: 0;
     border-right: none;
 }
+
+
+
